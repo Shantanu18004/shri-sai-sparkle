@@ -1,8 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { z } from "zod";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Input } from "@/components/ui/input";
 import { getProducts } from "@/lib/api/products";
@@ -10,13 +8,11 @@ import { getCategories } from "@/lib/api/categories";
 
 type ProductSearch = { category: string; q: string };
 
-const searchSchema = z.object({
-  category: fallback(z.string(), "").default(""),
-  q: fallback(z.string(), "").default(""),
-});
-
 export const Route = createFileRoute("/products")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (search: Record<string, unknown>): ProductSearch => ({
+    category: typeof search.category === "string" ? search.category : "",
+    q: typeof search.q === "string" ? search.q : "",
+  }),
   head: () => ({
     meta: [
       { title: "Products — Shri Sai Jewellers" },
