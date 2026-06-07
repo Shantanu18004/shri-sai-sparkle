@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { getProducts } from "@/lib/api/products";
 import { getCategories } from "@/lib/api/categories";
 
+type ProductSearch = { category: string; q: string };
+
 const searchSchema = z.object({
   category: fallback(z.string(), "").default(""),
   q: fallback(z.string(), "").default(""),
@@ -64,7 +66,7 @@ function ProductsPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              navigate({ search: (prev) => ({ ...prev, q: search }) });
+              navigate({ search: (prev: ProductSearch) => ({ ...prev, q: search }) });
             }}
             className="w-full md:max-w-sm"
           >
@@ -78,7 +80,7 @@ function ProductsPage() {
 
         <div className="mt-6 flex flex-wrap gap-2">
           <button
-            onClick={() => navigate({ search: (prev) => ({ ...prev, category: "" }) })}
+            onClick={() => navigate({ search: (prev: ProductSearch) => ({ ...prev, category: "" }) })}
             className={`rounded-full border px-3 py-1 text-sm ${!category ? "bg-primary text-primary-foreground" : "bg-background"}`}
           >
             All
@@ -86,7 +88,7 @@ function ProductsPage() {
           {cats.data?.map((c) => (
             <button
               key={c.id}
-              onClick={() => navigate({ search: (prev) => ({ ...prev, category: c.slug }) })}
+              onClick={() => navigate({ search: (prev: ProductSearch) => ({ ...prev, category: c.slug }) })}
               className={`rounded-full border px-3 py-1 text-sm ${category === c.slug ? "bg-primary text-primary-foreground" : "bg-background"}`}
             >
               {c.name}
