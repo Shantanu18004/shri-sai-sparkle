@@ -1,13 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { getFeaturedProducts, getProducts } from "@/lib/api/products";
+import { getProducts } from "@/lib/api/products";
 import { getCategories } from "@/lib/api/categories";
-import { getGoldRates } from "@/lib/api/goldRates";
 import { submitInquiry } from "@/lib/api/inquiries";
-import { subscribeToGoldRates } from "@/lib/api/realtime";
 import {
   Sparkles, ShieldCheck, Clock, Palette, IndianRupee, Gem, HeartHandshake,
   Award, Users, Star, Quote, Phone, Mail, MapPin, Send, MessageCircle, Filter,
@@ -273,9 +271,9 @@ function FeaturedProducts() {
                     {p.gold_purity && <span className="rounded bg-muted px-2 py-0.5">{p.gold_purity}</span>}
                   </div>
                   <div className="mt-4 flex items-center justify-between">
-                    <div className="font-serif text-lg font-bold">
-                      ₹{p.base_price ? Number(p.base_price).toLocaleString("en-IN") : "—"}
-                    </div>
+                    <Link to="/products/$id" params={{ id: p.id }} className="font-serif text-sm font-semibold text-gold hover:underline">
+                      View Details
+                    </Link>
                     <a
                       href={`https://wa.me/919651732538?text=Inquiry%20about%20${encodeURIComponent(p.product_name)}`}
                       target="_blank"
