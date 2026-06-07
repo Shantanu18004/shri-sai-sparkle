@@ -57,8 +57,7 @@ export async function updateOrderStatus(
   status: string,
   payment_status?: string,
 ) {
-  const patch: Record<string, string> = { status };
-  if (payment_status) patch.payment_status = payment_status;
+  const patch = payment_status ? { status, payment_status } : { status };
   const { data, error } = await supabase.from("orders").update(patch).eq("id", id).select().single();
   if (error) throw error;
   return data;
