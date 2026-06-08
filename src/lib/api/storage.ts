@@ -10,8 +10,12 @@ export async function uploadFile(bucket: Bucket, file: File, path?: string) {
     upsert: false,
   });
   if (error) throw error;
-  const { data } = supabase.storage.from(bucket).getPublicUrl(key);
-  return { path: key, url: data.publicUrl };
+  // Buckets are private — issue a long-lived signed URL (10 years).
+  const { data, error: signErr } = await supabase.storage
+    .from(bucket)
+    .createSignedUrl(key, 60 * 60 * 24 * 365 * 10);
+  if (signErr) throw signErr;
+  return { path: key, url: data.signedUrl };
 }
 
 export async function uploadProductImage(productId: string, file: File, isPrimary = false) {

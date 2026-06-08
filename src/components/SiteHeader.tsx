@@ -76,7 +76,7 @@ export function SiteHeader() {
               <div className="flex items-center gap-2">
                 {isAdmin && (
                   <Link
-                    to="/"
+                    to="/admin"
                     className="inline-flex items-center gap-1.5 rounded bg-gold px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-gold/90"
                   >
                     <ShoppingBag className="h-4 w-4" />
