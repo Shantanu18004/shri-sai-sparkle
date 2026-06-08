@@ -10,14 +10,15 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const nav: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/categories", label: "Categories", icon: Tags },
   { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { to: "/admin/gold-rates", label: "Gold Rates", icon: Coins },
   { to: "/admin/inquiries", label: "Inquiries", icon: Mail },
-] as const;
+];
 
 function AdminLayout() {
   const { user, isAdmin, loading } = useAuth();
@@ -55,7 +56,7 @@ function AdminLayout() {
             return (
               <Link
                 key={item.to}
-                to={item.to}
+                to={item.to as "/admin"}
                 className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
                   active ? "bg-gold text-primary-foreground" : "text-dark-foreground/80 hover:bg-dark-foreground/5 hover:text-gold"
                 }`}
@@ -75,7 +76,7 @@ function AdminLayout() {
       <main className="flex-1 overflow-x-auto p-6 md:p-8">
         <div className="mb-4 flex gap-2 overflow-x-auto md:hidden">
           {nav.map((item) => (
-            <Link key={item.to} to={item.to} className="whitespace-nowrap rounded-full border border-border px-3 py-1 text-xs">
+            <Link key={item.to} to={item.to as "/admin"} className="whitespace-nowrap rounded-full border border-border px-3 py-1 text-xs">
               {item.label}
             </Link>
           ))}
