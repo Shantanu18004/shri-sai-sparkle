@@ -20,6 +20,7 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
 import { Route as AdminGoldRatesRouteImport } from './routes/admin.gold-rates'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as ApiPublicHooksUpdateGoldRatesRouteImport } from './routes/api/public/hooks/update-gold-rates'
 
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
@@ -76,6 +77,12 @@ const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiPublicHooksUpdateGoldRatesRoute =
+  ApiPublicHooksUpdateGoldRatesRouteImport.update({
+    id: '/api/public/hooks/update-gold-rates',
+    path: '/api/public/hooks/update-gold-rates',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/admin/products': typeof AdminProductsRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/update-gold-rates': typeof ApiPublicHooksUpdateGoldRatesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,6 +109,7 @@ export interface FileRoutesByTo {
   '/admin/products': typeof AdminProductsRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/hooks/update-gold-rates': typeof ApiPublicHooksUpdateGoldRatesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -115,6 +124,7 @@ export interface FileRoutesById {
   '/admin/products': typeof AdminProductsRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/update-gold-rates': typeof ApiPublicHooksUpdateGoldRatesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/products/$id'
     | '/admin/'
+    | '/api/public/hooks/update-gold-rates'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/products/$id'
     | '/admin'
+    | '/api/public/hooks/update-gold-rates'
   id:
     | '__root__'
     | '/'
@@ -155,6 +167,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/products/$id'
     | '/admin/'
+    | '/api/public/hooks/update-gold-rates'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -162,6 +175,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   ProductsRoute: typeof ProductsRouteWithChildren
+  ApiPublicHooksUpdateGoldRatesRoute: typeof ApiPublicHooksUpdateGoldRatesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -243,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/public/hooks/update-gold-rates': {
+      id: '/api/public/hooks/update-gold-rates'
+      path: '/api/public/hooks/update-gold-rates'
+      fullPath: '/api/public/hooks/update-gold-rates'
+      preLoaderRoute: typeof ApiPublicHooksUpdateGoldRatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -283,7 +304,18 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   ProductsRoute: ProductsRouteWithChildren,
+  ApiPublicHooksUpdateGoldRatesRoute: ApiPublicHooksUpdateGoldRatesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
