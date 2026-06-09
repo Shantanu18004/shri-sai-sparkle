@@ -139,18 +139,21 @@ export type Database = {
       gold_rates: {
         Row: {
           id: string
+          is_manual: boolean
           purity: string
           rate_per_gram: number
           updated_at: string
         }
         Insert: {
           id?: string
+          is_manual?: boolean
           purity: string
           rate_per_gram: number
           updated_at?: string
         }
         Update: {
           id?: string
+          is_manual?: boolean
           purity?: string
           rate_per_gram?: number
           updated_at?: string
