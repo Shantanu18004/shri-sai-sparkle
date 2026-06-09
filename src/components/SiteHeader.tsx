@@ -17,6 +17,10 @@ export function GoldRateTicker() {
   }, [qc]);
 
   if (!data || data.length === 0) return null;
+  const latest = data.reduce<string | null>((acc, r) => {
+    if (!acc || new Date(r.updated_at) > new Date(acc)) return r.updated_at;
+    return acc;
+  }, null);
   return (
     <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
       <span className="font-medium text-gold">Live Gold Rate:</span>
@@ -25,6 +29,11 @@ export function GoldRateTicker() {
           {r.purity}: ₹{Number(r.rate_per_gram).toLocaleString("en-IN")}/g
         </span>
       ))}
+      {latest && (
+        <span className="text-[11px] text-dark-foreground/60">
+          Updated {new Date(latest).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}
+        </span>
+      )}
     </div>
   );
 }
