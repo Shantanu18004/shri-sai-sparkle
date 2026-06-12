@@ -1,17 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { getProducts } from "@/lib/api/products";
 import { getCategories } from "@/lib/api/categories";
-import { getGoldRates } from "@/lib/api/goldRates";
-import { subscribeToGoldRates } from "@/lib/api/realtime";
 import { submitInquiry } from "@/lib/api/inquiries";
 import {
   Sparkles, ShieldCheck, Clock, Palette, IndianRupee, Gem, HeartHandshake,
   Award, Users, Star, Quote, Phone, Mail, MapPin, Send, MessageCircle, Filter,
-  TrendingUp, RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 
