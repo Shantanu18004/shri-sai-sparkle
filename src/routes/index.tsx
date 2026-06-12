@@ -29,7 +29,6 @@ function Home() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <Hero />
-      <LiveGoldRates />
       <About />
       <Categories />
       <FeaturedProducts />
